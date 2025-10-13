@@ -170,7 +170,7 @@
     downlink_tx_power=-1
 
     # ADR is disabled.
-    adr_disabled=false
+    adr_disabled=true
 
     # Minimum data-rate.
     min_dr=0
