@@ -4,7 +4,7 @@
   # Log level.
   #
   # Options are: trace, debug, info, warn error.
-  level="info"
+  level="debug"
 
 
 # PostgreSQL configuration.
@@ -80,6 +80,44 @@
     "us915_0",
     "us915_1",
   ]
+
+# Scheduler settings.
+[network.scheduler]
+
+  # Scheduler interval.
+  #
+  # The interval in which the downlink scheduler for multicast, Class-B and
+  # Class-C runs.
+  interval="10ms"
+
+  # Class-A lock duration.
+  #
+  # This defines the lock duration between receiving a Class-A uplink and
+  # the next scheduler-run for a device. The purpose of this lock is to
+  # avoid collisions between Class-A and Class-B/C downlinks.
+  class_a_lock_duration="5s"
+
+  # Class-C lock duration.
+  #
+  # This defines the lock duration between scheduling two Class-C downlink
+  # payloads for the same device. The purpose of this lock is to avoid
+  # overlap between scheduling Class-C downlinks and / or spreading the 
+  # downlink capacity load on the gateway.
+  class_c_lock_duration="100ms"
+
+  # Multicast Class-C margin.
+  #
+  # This defines the minimum margin between scheduling multiple multicast downlinks
+  # (within the same multicast-group). This value must be equal or greater than the
+  # scheduler interval.
+  multicast_class_c_margin="200ms"
+
+  # Multicast Class-B margin.
+  #
+  # This defines the minimum margin between scheduling multiple multicast downlinks
+  # (within the same multicast-group). This value must be equal or greater than the
+  # scheduler interval.
+  multicast_class_b_margin="5s"
 
 
 # API interface configuration.
