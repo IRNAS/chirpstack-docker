@@ -13,6 +13,7 @@ services:
       - MQTT_BROKER_HOST=mosquitto
       - REDIS_HOST=redis
       - POSTGRESQL_HOST=postgres
+      - RUST_BACKTRACE=1
     ports:
       - "18080:8080"
 
@@ -30,27 +31,27 @@ services:
       - INTEGRATION__MQTT__COMMAND_TOPIC_TEMPLATE=ism2400/gateway/{{ .GatewayID }}/command/#
     depends_on:
       - mosquitto
-  
-  chirpstack-gateway-bridge-basicstation:
-    image: chirpstack/chirpstack-gateway-bridge:4
-    restart: unless-stopped
-    command: -c /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge-basicstation-ism2400.toml
-    ports:
-      - "13001:3001"
-    volumes:
-      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
-    depends_on:
-      - mosquitto
 
-  chirpstack-rest-api:
-    image: chirpstack/chirpstack-rest-api:4
-    restart: unless-stopped
-    command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
-    ports:
-      - "18090:8090"
-    depends_on:
-      - chirpstack
-
+#  chirpstack-gateway-bridge-basicstation:
+#    image: chirpstack/chirpstack-gateway-bridge:4
+#    restart: unless-stopped
+#    command: -c /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge-basicstation-ism2400.toml
+#    ports:
+#      - "13001:3001"
+#    volumes:
+#      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
+#    depends_on:
+#      - mosquitto
+#
+#  chirpstack-rest-api:
+#    image: chirpstack/chirpstack-rest-api:4
+#    restart: unless-stopped
+#    command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
+#    ports:
+#      - "18090:8090"
+#    depends_on:
+#      - chirpstack
+#
   postgres:
     image: postgres:14-alpine
     restart: unless-stopped
@@ -73,7 +74,7 @@ services:
     image: eclipse-mosquitto:2
     restart: unless-stopped
     ports:
-      - "1883:1883"
+      - "11883:1883"
     volumes: 
       - ./configuration/mosquitto/config/:/mosquitto/config/
 
