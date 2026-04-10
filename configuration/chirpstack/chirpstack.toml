@@ -139,5 +139,8 @@
   enabled=["mqtt"]
 
   [integration.mqtt]
-    server="tcp://$MQTT_BROKER_HOST:1883/"
+    server="$MQTT_SERVER_URL"
+    username="$MQTT_USERNAME"
+    password="$MQTT_PASSWORD"
     json=true
+    qos=1

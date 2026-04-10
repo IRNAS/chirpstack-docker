@@ -2,6 +2,8 @@ services:
   chirpstack:
     image: chirpstack/chirpstack:4
     command: -c /etc/chirpstack
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
     volumes:
       - ./configuration/chirpstack:/etc/chirpstack
@@ -11,25 +13,29 @@ services:
       - redis
     environment:
       - MQTT_BROKER_HOST=mosquitto
+      - MQTT_SERVER_URL=${MQTT_SERVER_URL}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
       - REDIS_HOST=redis
       - POSTGRESQL_HOST=postgres
       - RUST_BACKTRACE=1
     ports:
       - "18080:8080"
 
-  chirpstack-gateway-bridge:
-    image: chirpstack/chirpstack-gateway-bridge:4
-    restart: unless-stopped
-    ports:
-      - "1700:1700/udp"
-    volumes:
-      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
-    environment:
-      - INTEGRATION__MQTT__EVENT_TOPIC_TEMPLATE=ism2400/gateway/{{ .GatewayID }}/event/{{ .EventType }}
-      - INTEGRATION__MQTT__STATE_TOPIC_TEMPLATE=ism2400/gateway/{{ .GatewayID }}/state/{{ .StateType }}
-      - INTEGRATION__MQTT__COMMAND_TOPIC_TEMPLATE=ism2400/gateway/{{ .GatewayID }}/command/#
-    depends_on:
-      - mosquitto
+# needed if we have other gateways that dont publish to MQTT directly
+#  chirpstack-gateway-bridge:
+#    image: chirpstack/chirpstack-gateway-bridge:4
+#    restart: unless-stopped
+#    ports:
+#      - "1700:1700/udp"
+#    volumes:
+#      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
+#    environment:
+#      - INTEGRATION__MQTT__EVENT_TOPIC_TEMPLATE=ism2400/gateway/{{ .GatewayID }}/event/{{ .EventType }}
+#      - INTEGRATION__MQTT__STATE_TOPIC_TEMPLATE=ism2400/gateway/{{ .GatewayID }}/state/{{ .StateType }}
+#      - INTEGRATION__MQTT__COMMAND_TOPIC_TEMPLATE=ism2400/gateway/{{ .GatewayID }}/command/#
+#    depends_on:
+#      - mosquitto
   
 #  chirpstack-gateway-bridge-basicstation:
 #    image: chirpstack/chirpstack-gateway-bridge:4
