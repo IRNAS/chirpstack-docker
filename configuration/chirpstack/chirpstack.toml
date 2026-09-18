@@ -4,7 +4,7 @@
   # Log level.
   #
   # Options are: trace, debug, info, warn error.
-  level="debug"
+  level="warn"
 
 
 # PostgreSQL configuration.
@@ -64,19 +64,8 @@
   # Multiple regions can be enabled simultaneously. Each region must match
   # the 'name' parameter of the region configuration in '[[regions]]'.
   enabled_regions=[
-    "as923",
-    "as923_2",
-    "as923_3",
-    "as923_4",
-    "au915_0",
-    "cn470_10",
-    "cn779",
-    "eu433",
     "eu868",
-    "in865",
     "ism2400",
-    "kr920",
-    "ru864",
     "us915_0",
     "us915_1",
   ]
@@ -88,7 +77,7 @@
   #
   # The interval in which the downlink scheduler for multicast, Class-B and
   # Class-C runs.
-  interval="10ms"
+  interval="1s"
 
   # Class-A lock duration.
   #
@@ -103,14 +92,14 @@
   # payloads for the same device. The purpose of this lock is to avoid
   # overlap between scheduling Class-C downlinks and / or spreading the 
   # downlink capacity load on the gateway.
-  class_c_lock_duration="100ms"
+  class_c_lock_duration="1s"
 
   # Multicast Class-C margin.
   #
   # This defines the minimum margin between scheduling multiple multicast downlinks
   # (within the same multicast-group). This value must be equal or greater than the
   # scheduler interval.
-  multicast_class_c_margin="200ms"
+  multicast_class_c_margin="1s"
 
   # Multicast Class-B margin.
   #
@@ -140,4 +129,5 @@
 
   [integration.mqtt]
     server="tcp://$MQTT_BROKER_HOST:1883/"
-    json=true
+    #json=true
+    qos=1
