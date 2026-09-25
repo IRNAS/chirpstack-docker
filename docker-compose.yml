@@ -16,6 +16,9 @@ services:
       - RUST_BACKTRACE=1
     ports:
       - "18080:8080"
+    networks:
+      - default
+      - chirpstack-integrations
 
   # A gateway bridge needs to be run for each region?
   chirpstack-gateway-bridge:
@@ -81,3 +84,7 @@ services:
 volumes:
   postgresqldata:
   redisdata:
+
+networks:
+  chirpstack-integrations:
+    name: chirpstack-integrations
